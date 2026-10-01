@@ -1,0 +1,92 @@
+FIXMYBACK MANUAL
+================
+
+What this is
+------------
+A Mac background timer. If you sit at the computer for 30 minutes
+without a real break, it covers the screen and makes you stand and
+stretch for 1 minute.
+
+"Real break" = no mouse/keyboard for 3+ minutes (you walked away).
+
+
+RUN (start it, keep it on after reboot)
+---------------------------------------
+    cd ~/Mostafa/fixmyback
+    ./install.sh
+
+That loads a LaunchAgent. It starts now and every time you log in.
+
+Quick test (overlay in ~20 seconds, then Ctrl+C):
+
+    python3 ~/Mostafa/fixmyback/sit_timer.py --test
+
+Faster test:
+
+    python3 ~/Mostafa/fixmyback/sit_timer.py --sit-seconds 10 --stretch-seconds 3
+
+
+STOP
+----
+Stop forever (won't auto-start on login):
+
+    ~/Mostafa/fixmyback/uninstall.sh
+
+Stop only the test you just ran in Terminal:
+
+    Ctrl+C
+
+See if it is running:
+
+    launchctl print gui/$(id -u)/com.fixmyback.sittimer | head -n 20
+
+If you see "state = running", it is on.
+
+
+READ THE LOG
+------------
+Do not type the path alone. That tries to "run" the file.
+
+    cat ~/Library/Logs/fixmyback.log
+    tail -f ~/Library/Logs/fixmyback.log
+
+
+HOW IT BEHAVES
+--------------
+- Using mouse/keyboard = sitting. Clock counts.
+- Idle 3+ minutes = you stood up. Clock resets. Snoozes refill.
+- Mac slept / lid closed = you were away. Clock resets on wake.
+- Screen locked = it waits. No lock screen until you are actually back.
+- After 30 minutes: full-screen lock. Wait 1 minute, then click
+  "I stretched".
+- Busy? Click "Busy — remind me in 5 min" or press Space.
+  You get 2 snoozes. After that you must stretch the full minute.
+
+Honest limit: Cmd+Tab can still leave the overlay. Don't force-quit
+if you actually want the stretch.
+
+
+CHANGE THE TIMERS
+-----------------
+Edit ~/Mostafa/fixmyback/sit_timer.py near the top:
+
+    SIT_LIMIT_SECONDS   = 30 * 60     sit before lock
+    STRETCH_SECONDS     = 60          how long you must stretch
+    BREAK_IDLE_SECONDS  = 3 * 60      idle that counts as a break
+    SNOOZE_SECONDS      = 5 * 60      snooze length
+    MAX_SNOOZES         = 2           snoozes per cycle
+
+Then restart the agent:
+
+    launchctl kickstart -k "gui/$(id -u)/com.fixmyback.sittimer"
+
+
+FILES
+-----
+    sit_timer.py                      the program
+    install.sh / uninstall.sh         start / stop at login
+    com.fixmyback.sittimer.plist      macOS auto-start config
+    AGENTS.md                         notes for AI agents
+    ~/Library/Logs/fixmyback.log      what it is doing right now
+    ~/Library/LaunchAgents/com.fixmyback.sittimer.plist
+                                      copy of the auto-start file
