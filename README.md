@@ -32,3 +32,4 @@ python3 ~/Mostafa/fixmyback/sit_timer.py --test
 ```
 
 Use the mouse a little so it knows you are at the desk. After 20 seconds the stretch screen appears. Wait 10 seconds, then click **I stretched**.
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/2f8e6e70-3f2b-45b2-96bf-ccee4f6cf833" />
