@@ -20,7 +20,7 @@ out is the full minute. A real break resets your snoozes.
 ## Install (runs at login)
 
 ```bash
-cd ~/Mostafa/fixmyback
+cd ~/fixmyback
 chmod +x install.sh uninstall.sh
 ./install.sh
 ```
@@ -28,7 +28,7 @@ chmod +x install.sh uninstall.sh
 ## Try it in 20 seconds
 
 ```bash
-python3 ~/Mostafa/fixmyback/sit_timer.py --test
+python3 ~/fixmyback/sit_timer.py --test
 ```
 
 Use the mouse a little so it knows you are at the desk. After 20 seconds the stretch screen appears. Wait 10 seconds, then click **I stretched**.
